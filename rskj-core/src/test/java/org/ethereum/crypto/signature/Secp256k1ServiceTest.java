@@ -163,8 +163,8 @@ public abstract class Secp256k1ServiceTest {
         String receiver = "CD2A3D9F938E13CD947EC05ABC7FE734DF8DD826";
         ECKey fromPrivate = ECKey.fromPrivate(pk);
         ECKey fromPrivateDecompress = fromPrivate.decompress();
-        String pubKeyExpected = Hex.toHexString(fromPrivateDecompress.getPubKey());
-        String addressExpected = Hex.toHexString(fromPrivateDecompress.getAddress());
+        String pubKeyExpected = ByteUtil.toHexString(fromPrivateDecompress.getPubKey());
+        String addressExpected = ByteUtil.toHexString(fromPrivateDecompress.getAddress());
 
         // Create tx and sign, then recover from serialized.
         Transaction newTx = new Transaction(2l, 2l, 2l, receiver, 2l, messageHash, (byte) 0);
@@ -174,13 +174,14 @@ public abstract class Secp256k1ServiceTest {
         ECKey actualKey = this.getSecp256k1().signatureToKey(HashUtil.keccak256(recoveredTx.getEncodedRaw()), recoveredTx.getSignature());
 
         // Recover PK and Address.
-        String pubKeyActual = Hex.toHexString(actualKey.getPubKey());
+
+        String pubKeyActual = ByteUtil.toHexString(actualKey.getPubKey());
         logger.debug("Signature public key\t: {}", pubKeyActual);
         assertEquals(pubKeyExpected, pubKeyActual);
         assertEquals(pubString, pubKeyActual);
         assertArrayEquals(pubKey, actualKey.getPubKey());
 
-        String addressActual = Hex.toHexString(actualKey.getAddress());
+        String addressActual = ByteUtil.toHexString(actualKey.getAddress());
         logger.debug("Sender is\t\t: {}", addressActual);
         assertEquals(addressExpected, addressActual);
     }
