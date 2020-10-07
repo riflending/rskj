@@ -173,7 +173,7 @@ public class Constants {
     }
 
     public static int getMaxContractSize() {
-        return 0x6000;
+        return 0xA000;
     }
 
     public static int getMaxAddressByteLength() {
